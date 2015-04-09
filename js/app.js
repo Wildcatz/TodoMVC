@@ -51,7 +51,9 @@ jQuery(function ($) {
 
 	var App = {
 		init: function () {
-			this.todos = util.store('todos-jquery');
+			this.todos = [];
+			$.getJSON( "https://api.github.com/repos/wildcatz/TodoMVC/issues?access_token=" + util.getApiKey(),
+								 this.createIssuesCallback.bind(this));
 			this.cacheElements();
 			this.bindEvents();
 
@@ -61,6 +63,14 @@ jQuery(function ($) {
 					this.render();
 				}.bind(this)
 			}).init('/all');
+		},
+		createIssuesCallback: function( data ) {
+			$.each ( data, function( key, object ) {
+				console.log(this);
+				console.log(this.todos);
+				this.todos.push({id: object.number, title: object.title});
+			}.bind(this));
+			this.render();
 		},
 		cacheElements: function () {
 			this.todoTemplate = Handlebars.compile($('#todo-template').html());
@@ -217,6 +227,6 @@ jQuery(function ($) {
 			this.render();
 		}
 	};
-
+	window.app = App;
 	App.init();
 });

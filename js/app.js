@@ -66,9 +66,7 @@ jQuery(function ($) {
 		},
 		createIssuesCallback: function( data ) {
 			$.each ( data, function( key, object ) {
-				console.log(this);
-				console.log(this.todos);
-				this.todos.push({id: object.number, title: object.title});
+				this.todos.push({id: object.number, title: object.title, body: object.body});
 			}.bind(this));
 			this.render();
 		},
@@ -176,6 +174,7 @@ jQuery(function ($) {
 			this.todos.push({
 				id: util.uuid(),
 				title: val,
+				body: null,
 				completed: false
 			});
 

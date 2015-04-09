@@ -12,6 +12,7 @@
 			<header id="header">
 				<h1>todos</h1>
 				<input id="new-todo" placeholder="What needs to be done?" autofocus>
+				<input id="new-todo" placeholder="Add details here" autofocus>
 			</header>
 			<section id="main">
 				<input id="toggle-all" type="checkbox">
@@ -22,6 +23,7 @@
 		</section>
 		<footer id="info">
 			<p>Double-click to edit a todo</p>
+			<p>Updated by Tim Heuett and Amanda Kom</p>
 			<p>Created by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
 			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 		</footer>
@@ -31,6 +33,7 @@
 				<div class="view">
 					<input class="toggle" type="checkbox" {{#if completed}}checked{{/if}}>
 					<label>{{title}}</label>
+					<label>{{body}}</label>
 					<button class="destroy"></button>
 				</div>
 				<input class="edit" value="{{title}}">

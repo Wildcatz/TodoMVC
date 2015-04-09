@@ -25,9 +25,20 @@ jQuery(function ($) {
 
 			return uuid;
 		},
+
+		getApiKey: function () {
+			var key = localStorage.getItem("github_key");
+			if (!key) {
+				key = prompt('What is your GitHub API key?');
+				localStorage.setItem("github_key", key);
+			}
+			return key;
+		},
+
 		pluralize: function (count, word) {
 			return count === 1 ? word : word + 's';
 		},
+
 		store: function (namespace, data) {
 			if (arguments.length > 1) {
 				return localStorage.setItem(namespace, JSON.stringify(data));

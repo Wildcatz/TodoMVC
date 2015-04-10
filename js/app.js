@@ -93,7 +93,6 @@ jQuery(function ($) {
 			list.on('dblclick', 'label', this.edit.bind(this));
 			list.on('keyup', '.edit', this.editKeyup.bind(this));
 			list.on('focusout', '.edit', this.update.bind(this));
-			list.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
 			var todos = this.getFilteredTodos();
@@ -231,10 +230,6 @@ jQuery(function ($) {
 				this.todos.splice(i, 1);
 			}
 
-			this.render();
-		},
-		destroy: function (e) {
-			this.todos.splice(this.indexFromEl(e.target), 1);
 			this.render();
 		}
 	};

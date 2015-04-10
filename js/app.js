@@ -153,7 +153,7 @@ jQuery(function ($) {
 						 "json");
 		},
 		createCallback: function data(data) {
-			this.todos.push({
+			this.todos.unshift({
 				id: data.number,
 				title: data.title,
 				body: data.body,

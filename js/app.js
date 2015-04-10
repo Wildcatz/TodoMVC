@@ -165,21 +165,32 @@ jQuery(function ($) {
 			}
 		},
 		create: function (e) {
-			var $input = $(e.target);
-			var val = $input.val().trim();
+			var $title_input = $('#new-todo');
+			var $body_input = $('#new-todo-body');
+			var title = $title_input.val().trim();
+			var body = $body_input.val().trim();
 
-			if (e.which !== ENTER_KEY || !val) {
+			if (e.which !== ENTER_KEY || !title) {
 				return;
 			}
 
+			$.post("https://api.github.com/repos/wildcatz/TodoMVC/issues?access_token=" + util.getApiKey(),
+						 JSON.stringify({ "title": title, "body": body }),
+						 this.createCallback.bind(this),
+						 "json");
+		},
+		createCallback: function data() {
+			var object = $.parseJSON(data);
+			console.log(object);
+
 			this.todos.push({
-				id: util.uuid(),
-				title: val,
-				body: null,
+				id: object.number,
+				title: object.title,
+				body: object.body,
 				completed: false
 			});
 
-			$input.val('');
+			$('#new-todo').val('');
 
 			this.render();
 		},
@@ -227,6 +238,7 @@ jQuery(function ($) {
 			this.render();
 		}
 	};
+
 	window.app = App;
 	App.init();
 });

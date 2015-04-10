@@ -10,22 +10,6 @@ jQuery(function ($) {
 	var ESCAPE_KEY = 27;
 
 	var util = {
-		uuid: function () {
-			/*jshint bitwise:false */
-			var i, random;
-			var uuid = '';
-
-			for (i = 0; i < 32; i++) {
-				random = Math.random() * 16 | 0;
-				if (i === 8 || i === 12 || i === 16 || i === 20) {
-					uuid += '-';
-				}
-				uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
-			}
-
-			return uuid;
-		},
-
 		getApiKey: function () {
 			var key = localStorage.getItem("github_key");
 			if (!key) {
@@ -37,15 +21,6 @@ jQuery(function ($) {
 
 		pluralize: function (count, word) {
 			return count === 1 ? word : word + 's';
-		},
-
-		store: function (namespace, data) {
-			if (arguments.length > 1) {
-				return localStorage.setItem(namespace, JSON.stringify(data));
-			} else {
-				var store = localStorage.getItem(namespace);
-				return (store && JSON.parse(store)) || [];
-			}
 		}
 	};
 
@@ -66,7 +41,8 @@ jQuery(function ($) {
 		},
 		createIssuesCallback: function( data ) {
 			$.each ( data, function( key, object ) {
-				this.todos.push({id: object.number, title: object.title, body: object.body});
+				if(!object.pull_request)
+					this.todos.push({id: object.number, title: object.title, body: object.body});
 			}.bind(this));
 			this.render();
 		},
@@ -78,6 +54,7 @@ jQuery(function ($) {
 			this.$main = this.$todoApp.find('#main');
 			this.$footer = this.$todoApp.find('#footer');
 			this.$newTodo = this.$header.find('#new-todo');
+			this.$newTodoBody = this.$header.find('#new-todo-body');
 			this.$toggleAll = this.$main.find('#toggle-all');
 			this.$todoList = this.$main.find('#todo-list');
 			this.$count = this.$footer.find('#todo-count');
@@ -86,6 +63,7 @@ jQuery(function ($) {
 		bindEvents: function () {
 			var list = this.$todoList;
 			this.$newTodo.on('keyup', this.create.bind(this));
+			this.$newTodoBody.on('keyup', this.create.bind(this));
 			this.$toggleAll.on('change', this.toggleAll.bind(this));
 			this.$footer.on('click', '#clear-completed', this.destroyCompleted.bind(this));
 			list.on('change', '.toggle', this.toggle.bind(this));
@@ -100,7 +78,6 @@ jQuery(function ($) {
 			this.$toggleAll.prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			this.$newTodo.focus();
-			util.store('todos-jquery', this.todos);
 		},
 		renderFooter: function () {
 			var todoCount = this.todos.length;
@@ -163,21 +140,28 @@ jQuery(function ($) {
 			}
 		},
 		create: function (e) {
-			var $input = $(e.target);
-			var val = $input.val().trim();
+			var title = this.$newTodo.val().trim();
+			var body = this.$newTodoBody.val().trim();
 
-			if (e.which !== ENTER_KEY || !val) {
+			if (e.which !== ENTER_KEY || !title) {
 				return;
 			}
 
+			$.post("https://api.github.com/repos/wildcatz/TodoMVC/issues?access_token=" + util.getApiKey(),
+						 JSON.stringify({ "title": title, "body": body }),
+						 this.createCallback.bind(this),
+						 "json");
+		},
+		createCallback: function data(data) {
 			this.todos.push({
-				id: util.uuid(),
-				title: val,
-				body: null,
+				id: data.number,
+				title: data.title,
+				body: data.body,
 				completed: false
 			});
 
-			$input.val('');
+			this.$newTodo.val('');
+			this.$newTodoBody.val('');
 
 			this.render();
 		},
@@ -200,27 +184,28 @@ jQuery(function ($) {
 			}
 		},
 		update: function (e) {
-			var el = e.target;
-			var $el = $(el);
-			var val = $el.val().trim();
+			// var el = e.target;
+			// var $el = $(el);
+			// var val = $el.val().trim();
 
-			if ($el.data('abort')) {
-				$el.data('abort', false);
-				this.render();
-				return;
-			}
+			// if ($el.data('abort')) {
+			// 	$el.data('abort', false);
+			// 	this.render();
+			// 	return;
+			// }
 
-			var i = this.indexFromEl(el);
+			// var i = this.indexFromEl(el);
 
-			if (val) {
-				this.todos[i].title = val;
-			} else {
-				this.todos.splice(i, 1);
-			}
+			// if (val) {
+			// 	this.todos[i].title = val;
+			// } else {
+			// 	this.todos.splice(i, 1);
+			// }
 
-			this.render();
+			// this.render();
 		}
 	};
+
 	window.app = App;
 	App.init();
 });

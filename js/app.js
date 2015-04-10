@@ -152,14 +152,11 @@ jQuery(function ($) {
 						 this.createCallback.bind(this),
 						 "json");
 		},
-		createCallback: function data() {
-			var object = $.parseJSON(data);
-			console.log(object);
-
+		createCallback: function data(data) {
 			this.todos.push({
-				id: object.number,
-				title: object.title,
-				body: object.body,
+				id: data.number,
+				title: data.title,
+				body: data.body,
 				completed: false
 			});
 

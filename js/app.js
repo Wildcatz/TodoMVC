@@ -122,6 +122,12 @@ jQuery(function ($) {
 			return this.todos;
 		},
 		destroyCompleted: function () {
+			var finishedTodos = this.getCompletedTodos();
+			$.each(finishedTodos, function(key, todo) {
+				$.post("https://api.github.com/repos/wildcatz/TodoMVC/issues/" + todo.id + "?access_token=" + util.getApiKey(),
+							 JSON.stringify({ state: 'closed' }));
+			}.bind(this));
+
 			this.todos = this.getActiveTodos();
 			this.filter = 'all';
 			this.render();

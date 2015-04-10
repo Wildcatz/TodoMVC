@@ -82,10 +82,12 @@ jQuery(function ($) {
 		renderFooter: function () {
 			var todoCount = this.todos.length;
 			var activeTodoCount = this.getActiveTodos().length;
+			var completedTodoCount = todoCount - activeTodoCount;
 			var template = this.footerTemplate({
 				activeTodoCount: activeTodoCount,
-				activeTodoWord: util.pluralize(activeTodoCount, 'item'),
-				completedTodos: todoCount - activeTodoCount,
+				activeTodoWord: util.pluralize(activeTodoCount, 'issue'),
+				completedTodos: completedTodoCount,
+				completedTodoWord: util.pluralize(completedTodoCount, 'issue'),
 				filter: this.filter
 			});
 

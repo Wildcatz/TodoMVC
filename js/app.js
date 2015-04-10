@@ -187,25 +187,25 @@ jQuery(function ($) {
 			}
 		},
 		update: function (e) {
-			var el = e.target;
-			var $el = $(el);
-			var val = $el.val().trim();
+			// var el = e.target;
+			// var $el = $(el);
+			// var val = $el.val().trim();
 
-			if ($el.data('abort')) {
-				$el.data('abort', false);
-				this.render();
-				return;
-			}
+			// if ($el.data('abort')) {
+			// 	$el.data('abort', false);
+			// 	this.render();
+			// 	return;
+			// }
 
-			var i = this.indexFromEl(el);
+			// var i = this.indexFromEl(el);
 
-			if (val) {
-				this.todos[i].title = val;
-			} else {
-				this.todos.splice(i, 1);
-			}
+			// if (val) {
+			// 	this.todos[i].title = val;
+			// } else {
+			// 	this.todos.splice(i, 1);
+			// }
 
-			this.render();
+			// this.render();
 		}
 	};
 

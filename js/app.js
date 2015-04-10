@@ -54,6 +54,7 @@ jQuery(function ($) {
 			this.$main = this.$todoApp.find('#main');
 			this.$footer = this.$todoApp.find('#footer');
 			this.$newTodo = this.$header.find('#new-todo');
+			this.$newTodoBody = this.$header.find('#new-todo-body');
 			this.$toggleAll = this.$main.find('#toggle-all');
 			this.$todoList = this.$main.find('#todo-list');
 			this.$count = this.$footer.find('#todo-count');
@@ -62,6 +63,7 @@ jQuery(function ($) {
 		bindEvents: function () {
 			var list = this.$todoList;
 			this.$newTodo.on('keyup', this.create.bind(this));
+			this.$newTodoBody.on('keyup', this.create.bind(this));
 			this.$toggleAll.on('change', this.toggleAll.bind(this));
 			this.$footer.on('click', '#clear-completed', this.destroyCompleted.bind(this));
 			list.on('change', '.toggle', this.toggle.bind(this));
@@ -138,10 +140,8 @@ jQuery(function ($) {
 			}
 		},
 		create: function (e) {
-			var $title_input = $('#new-todo');
-			var $body_input = $('#new-todo-body');
-			var title = $title_input.val().trim();
-			var body = $body_input.val().trim();
+			var title = this.$newTodo.val().trim();
+			var body = this.$newTodoBody.val().trim();
 
 			if (e.which !== ENTER_KEY || !title) {
 				return;
@@ -160,7 +160,8 @@ jQuery(function ($) {
 				completed: false
 			});
 
-			$('#new-todo').val('');
+			this.$newTodo.val('');
+			this.$newTodoBody.val('');
 
 			this.render();
 		},

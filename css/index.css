@@ -110,6 +110,11 @@ input[type="checkbox"] {
 	font-size: 17px;
 }
 
+.id-number {
+	float:right;
+	font-size: 27px;
+}
+
 #new-todo,
 #new-todo-body {
 	padding: 16px 16px 16px 60px;
@@ -176,6 +181,10 @@ label[for='toggle-all'] {
 	width: 506px;
 	padding: 13px 17px 12px 17px;
 	margin: 0 0 0 43px;
+}
+
+#todo-list li.editing .edit-body {
+	font-size: 17px;
 }
 
 #todo-list li.editing .view {

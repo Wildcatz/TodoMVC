@@ -32,6 +32,8 @@
 			<li {{#if completed}}class="completed"{{/if}} data-id="{{id}}">
 				<div class="view">
 					<input class="toggle" type="checkbox" {{#if completed}}checked{{/if}}>
+					<label class="id-number">#{{id}}</label>
+					<label>{{title}}</label>
 					<label class="todo-title">{{title}}</label>
 					<label class="todo-body">{{body}}</label>
 				</div>

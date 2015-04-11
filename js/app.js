@@ -79,7 +79,6 @@ jQuery(function ($) {
 			this.$main.toggle(todos.length > 0);
 			this.$toggleAll.prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
-			this.$newTodo.focus();
 		},
 		renderFooter: function () {
 			var todoCount = this.todos.length;

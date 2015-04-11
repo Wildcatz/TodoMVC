@@ -180,7 +180,7 @@ jQuery(function ($) {
 			this.render();
 		},
 		edit: function (e) {
-			if ($(e.target).hasClass("edit")) {
+			if ($(e.target).hasClass("todo-title")) {
 				var $title = $(e.target).closest('li').addClass('editing').find('.edit');
 				$title.focus();
 			} else {
@@ -200,17 +200,12 @@ jQuery(function ($) {
 		},
 		exitEdit: function (e) {
 			var $el = $(e.target);
-			var $title, $body;
-			if ($el.hasClass("edit")) {
-				$title = $el;
-				$body = $title.siblings(".edit-body");
+			var $mouseTarget = $(e.relatedTarget);
+			if($el.closest('li').data('id') == $mouseTarget.closest('li').data('id')) {
+				return;
+			} else {
+				$el.closest('li').removeClass('editing');
 			}
-			else {
-				$body = $el;
-				$title = $body.siblings(".edit");
-			}
-			$title.closest('li').removeClass('editing');
-			$body.closest('li').removeClass('editing');
 		},
 		update: function (e) {
 			var el = e.target;

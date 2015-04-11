@@ -1,11 +1,23 @@
-# jQuery TodoMVC Example
+#jQuery TodoMVC - GitHub Issues
+-------------------------------
+Connect with your GitHub Issues with this app. Create new issues, update with any changes, and close the issues that you have already finished... all from this app!
+
+You'll first need to get authorization by using a personal access token from GitHub by creating an API key here: https://github.com/settings/applications. You will be prompted the first time you visit the app.
+
+This app is currently hard-coded for this specific app, but you can update with your own GitHub repo URL to make it work for you.
+
+By Tim Heuett and Amanda Kom
+
+#The Original Project
+----------------------
+## jQuery TodoMVC Example
 
 > jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.
 
 > _[jQuery - jquery.com](http://jquery.com)_
 
 
-## Learning jQuery
+### Learning jQuery
 
 The [jQuery website](http://jquery.com) is a great resource for getting started.
 

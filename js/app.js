@@ -69,7 +69,9 @@ jQuery(function ($) {
 			list.on('change', '.toggle', this.toggle.bind(this));
 			list.on('dblclick', 'label', this.edit.bind(this));
 			list.on('keyup', '.edit', this.editKeyup.bind(this));
-			list.on('focusout', '.edit', this.update.bind(this));
+			list.on('keyup', '.edit-body', this.editKeyup.bind(this));
+			list.on('focusout', '.edit', this.exitEdit.bind(this));
+			list.on('focusout', '.edit-body', this.exitEdit.bind(this));
 		},
 		render: function () {
 			var todos = this.getFilteredTodos();
@@ -179,38 +181,68 @@ jQuery(function ($) {
 			this.render();
 		},
 		edit: function (e) {
-			var $input = $(e.target).closest('li').addClass('editing').find('.edit');
-			$input.val($input.val()).focus();
+			if ($(e.target).hasClass("edit")) {
+				var $title = $(e.target).closest('li').addClass('editing').find('.edit');
+				$title.focus();
+			} else {
+				var $body = $(e.target).closest('li').addClass('editing').find('.edit-body');
+				$body.focus();
+			}
 		},
 		editKeyup: function (e) {
 			if (e.which === ENTER_KEY) {
+				this.update(e);
 				e.target.blur();
 			}
 
 			if (e.which === ESCAPE_KEY) {
-				$(e.target).data('abort', true).blur();
+				this.exitEdit(e);
 			}
 		},
+		exitEdit: function (e) {
+			var $el = $(e.target);
+			var $title, $body;
+			if ($el.hasClass("edit")) {
+				$title = $el;
+				$body = $title.siblings(".edit-body");
+			}
+			else {
+				$body = $el;
+				$title = $body.siblings(".edit");
+			}
+			$title.closest('li').removeClass('editing');
+			$body.closest('li').removeClass('editing');
+		},
 		update: function (e) {
-			// var el = e.target;
-			// var $el = $(el);
-			// var val = $el.val().trim();
+			var el = e.target;
+			var $el = $(el);
+			var $title, $body;
 
-			// if ($el.data('abort')) {
-			// 	$el.data('abort', false);
-			// 	this.render();
-			// 	return;
-			// }
+			if ($el.hasClass("edit")) {
+				$title = $el;
+				$body = $title.siblings(".edit-body");
+			}
+			else {
+				$body = $el;
+				$title = $body.siblings(".edit");
+			}
 
-			// var i = this.indexFromEl(el);
+			var title = $title.val().trim();
+			var body = $body.val().trim();
 
-			// if (val) {
-			// 	this.todos[i].title = val;
-			// } else {
-			// 	this.todos.splice(i, 1);
-			// }
+			var i = this.indexFromEl(el);
 
-			// this.render();
+			if (title || body) {
+				this.todos[i].title = title;
+				this.todos[i].body = body;
+			}
+
+			$.post("https://api.github.com/repos/wildcatz/TodoMVC/issues/" + (this.todos[i].id) + "?access_token=" + util.getApiKey(),
+						 JSON.stringify({ "title": title, "body": body }),
+						 this.createCallback.bind(this),
+						 "json");
+
+			this.render();
 		}
 	};
 

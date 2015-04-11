@@ -183,10 +183,10 @@ jQuery(function ($) {
 		edit: function (e) {
 			if ($(e.target).hasClass("edit")) {
 				var $title = $(e.target).closest('li').addClass('editing').find('.edit');
-				$title.val($title.val()).focus();
+				$title.focus();
 			} else {
 				var $body = $(e.target).closest('li').addClass('editing').find('.edit-body');
-				$body.val($body.val()).focus();
+				$body.focus();
 			}
 		},
 		editKeyup: function (e) {

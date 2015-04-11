@@ -106,6 +106,10 @@ input[type="checkbox"] {
 	font-smoothing: antialiased;
 }
 
+.todo-body {
+	font-size: 17px;
+}
+
 #new-todo,
 #new-todo-body {
 	padding: 16px 16px 16px 60px;
@@ -201,8 +205,7 @@ label[for='toggle-all'] {
 }
 
 #todo-list li label {
-	white-space: pre;
-	word-break: break-word;
+	white-space: pre-wrap;
 	padding: 15px 60px 15px 15px;
 	margin-left: 45px;
 	display: block;
